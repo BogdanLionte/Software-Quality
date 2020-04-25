@@ -1,7 +1,9 @@
 package graph;
 
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
@@ -12,6 +14,7 @@ import java.util.List;
 public class GraphController {
 
     private static final Double SCALING = 50.;
+    private static WritableImage image;
     @FXML
     GridPane gridPane;
 
@@ -59,6 +62,7 @@ public class GraphController {
         pane.setTranslateX(pane.getWidth() / 2);
         pane.setTranslateY(pane.getHeight() / 2);
 
+        image = pane.snapshot(new SnapshotParameters(), new WritableImage((int)pane.getWidth(), (int)pane.getHeight()));
     }
 
     private void drawXvalues(double left, double right, double step) {
@@ -81,4 +85,7 @@ public class GraphController {
         }
     }
 
+    public WritableImage getImage() {
+        return image;
+    }
 }

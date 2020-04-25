@@ -3,12 +3,14 @@ package frontend;
 import graph.GraphController;
 import integral.PrefixEv;
 import integral.PrefixIntegral;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -18,8 +20,13 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +49,7 @@ public class MainWindow extends Stage {
     private Button exportImage = new Button("export image");
     private Button exportText = new Button("export text");
     private boolean eraseApproximations;
+    private static WritableImage image;
 
     public MainWindow() {
         StackPane root = new StackPane();
@@ -193,12 +201,24 @@ public class MainWindow extends Stage {
         stage.show();
         graphController.drawGraph(points);
 
+        image = graphController.getImage();
     }
 
     private void imageExportListener() {
         File dir = getDirectoryFromUser();
         if (dir == null) {
             return;
+        }
+
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", baos);
+            baos.flush();
+            Files.write(Paths.get(dir.getAbsolutePath(), "imgExport.png"), baos.toByteArray(),
+                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            baos.close();
+        } catch (IOException e) {
+            windowManager.openAlert("Error writing to selected file");
         }
     }
 
