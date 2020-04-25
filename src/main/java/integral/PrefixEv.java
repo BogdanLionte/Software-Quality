@@ -1,3 +1,5 @@
+package integral;
+
 import javafx.util.Pair;
 
 import java.util.*;
@@ -8,7 +10,7 @@ import static java.lang.Math.*;
 public class PrefixEv {
 
     private static List<String> unary_ops = Arrays.asList("exp", "sqrt", "sin", "cos", "tan", "log"),
-                                binary_ops = Arrays.asList("+", "-", "*", "/", "%", "^");
+            binary_ops = Arrays.asList("+", "-", "*", "/", "%", "^");
 
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
@@ -44,7 +46,7 @@ public class PrefixEv {
             if (!Objects.equals(term, "x") && !isNumeric(term)
                     && !unary_ops.contains(term) && !binary_ops.contains(term)
                     && !Objects.equals(term, "(") && !Objects.equals(term, ")"))
-                throw new IOException("InvalidTokenException");
+                throw new IOException(term);
         }
 
         for (String term : terms) {
@@ -125,100 +127,87 @@ public class PrefixEv {
         return operands.peek();
     }
 
-    public static List<Pair<Double, Double>> evaluatePrefix(String infix, double low, double high, double step) throws IOException {
+    public static Double f(double it, List<String> terms) {
+        Stack<Double> st = new Stack<Double>();
+
+        for (String t : terms) {
+
+            if (Objects.equals(t, "x"))
+                st.push(it);
+
+            else if (isNumeric(t))
+                st.push(Double.parseDouble(t));
+
+            else {
+                double o1 = st.peek();
+                st.pop();
+                double o2;
+
+                switch (t) {
+                    case "+":
+                        o2 = st.peek();
+                        st.pop();
+                        st.push(o1 + o2);
+                        break;
+                    case "-":
+                        o2 = st.peek();
+                        st.pop();
+                        st.push(o1 - o2);
+                        break;
+                    case "*":
+                        o2 = st.peek();
+                        st.pop();
+                        st.push(o1 * o2);
+                        break;
+                    case "/":
+                        o2 = st.peek();
+                        st.pop();
+                        st.push(o1 / o2);
+                        break;
+                    case "%":
+                        o2 = st.peek();
+                        st.pop();
+                        st.push(o1 % o2);
+                        break;
+                    case "^":
+                        o2 = st.peek();
+                        st.pop();
+                        st.push(pow(o1, o2));
+                        break;
+                    case "exp":
+                        st.push(exp(o1));
+                        break;
+                    case "sqrt":
+                        st.push(sqrt(o1));
+                        break;
+                    case "sin":
+                        st.push(sin(o1));
+                        break;
+                    case "cos":
+                        st.push(cos(o1));
+                        break;
+                    case "tan":
+                        st.push(tan(o1));
+                        break;
+                    case "log":
+                        st.push(log(o1));
+                        break;
+                }
+            }
+        }
+
+        return st.peek();
+    }
+
+    public static List<Pair<Double, Double>> evaluate(String expr, double low, double high, double step) throws IOException {
         List<Pair<Double, Double>> res = new ArrayList<>();
-        String prefix = infixToPrefix(infix);
+        String prefix = infixToPrefix(expr);
         List<String> terms = Arrays.asList(prefix.split(" "));
-        boolean not_a_number;
 
         Collections.reverse(terms);
         for (double it = low; it <= high; it += step) {
-            Stack<Double> st = new Stack<Double>();
-            not_a_number = false;
-
-            for (String t : terms) {
-
-                if (Objects.equals(t, "x"))
-                    st.push(it);
-
-                else if (isNumeric(t))
-                    st.push(Double.parseDouble(t));
-
-                else {
-                    double o1 = st.peek();
-                    st.pop();
-                    double o2;
-
-                    switch (t) {
-                        case "+":
-                            o2 = st.peek();
-                            st.pop();
-                            st.push(o1 + o2);
-                            break;
-                        case "-":
-                            o2 = st.peek();
-                            st.pop();
-                            st.push(o1 - o2);
-                            break;
-                        case "*":
-                            o2 = st.peek();
-                            st.pop();
-                            st.push(o1 * o2);
-                            break;
-                        case "/":
-                            o2 = st.peek();
-                            st.pop();
-                            if (o2 != 0)
-                                st.push(o1 / o2);
-                            else
-                                not_a_number = true;
-                            break;
-                        case "%":
-                            o2 = st.peek();
-                            st.pop();
-                            if (o2 != 0)
-                                st.push(o1 % o2);
-                            else
-                                not_a_number = true;
-                            break;
-                        case "^":
-                            o2 = st.peek();
-                            st.pop();
-                            st.push(pow(o1, o2));
-                            break;
-                        case "exp":
-                            st.push(exp(o1));
-                            break;
-                        case "sqrt":
-                            if (o1 >= 0)
-                                st.push(sqrt(o1));
-                            else
-                                not_a_number = true;
-                            break;
-                        case "sin":
-                            st.push(sin(o1));
-                            break;
-                        case "cos":
-                            st.push(cos(o1));
-                            break;
-                        case "tan":
-                            st.push(tan(o1));
-                            break;
-                        case "log":
-                            if (o1 >= 0)
-                                st.push(log(o1));
-                            else
-                                not_a_number = true;
-                            break;
-                    }
-                }
-
-                if (not_a_number)
-                    break;
-            }
-
-            if (!not_a_number)
-                res.add(new Pair<>(it, st.peek()));
+            double val = f(it, terms);
+            res.add(new Pair<>(it, val));
         }
 
         return res;
@@ -228,12 +217,11 @@ public class PrefixEv {
 
         try {
             System.out.println(infixToPrefix("( x ^ 3 - 6 * x ^ 2 ) + ( 4 * x + 12 )"));
-            System.out.println(evaluatePrefix("( x ^ 3 - 6 * x ^ 2 ) + ( 4 * x + 12 )", -1, 1, 0.1));
-            System.out.println(evaluatePrefix("exp ( x )", -1, 1, 0.1));
-            System.out.println(evaluatePrefix("sqrt ( x )", -1, 2, 0.1));
-            System.out.println(evaluatePrefix("log ( x )", -1, 2, 0.1));
-            System.out.println(evaluatePrefix("sin ( x )", -1, 1, 0.1));
-            System.out.println(evaluatePrefix("1 / x", 0, 1, 0.1));
+            System.out.println(evaluate("( x ^ 3 - 6 * x ^ 2 ) + ( 4 * x + 12 )", -1, 1, 0.1));
+            System.out.println(evaluate("exp ( x )", -1, 1, 0.1));
+            System.out.println(evaluate("sqrt ( x )", 0, 2, 0.1));
+            System.out.println(evaluate("log ( x )", 0, 2, 0.1));
+            System.out.println(evaluate("sin ( x )", -1, 1, 0.1));
         } catch (IOException e) {
             e.printStackTrace();
         }
