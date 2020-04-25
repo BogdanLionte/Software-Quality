@@ -1,9 +1,11 @@
 package frontend;
 
+import graph.GraphController;
 import integral.PrefixEv;
 import integral.PrefixIntegral;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -148,7 +150,8 @@ public class MainWindow extends Stage {
             windowManager.openAlert("Step bigger than interval!");
             return;
         }
-        //draw the graph here
+
+        drawGraph(points);
 
         if (integral.isSelected()) {
             List<Double> approximations = PrefixIntegral.integral(functionInput.getText(), lowIntervalNumber,
@@ -169,6 +172,26 @@ public class MainWindow extends Stage {
         }
         exportImage.setDisable(false);
         exportText.setDisable(false);
+    }
+
+    private void drawGraph(List<Pair<Double, Double>> points) {
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/graph/graph.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 450, 250);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        GraphController graphController = fxmlLoader.getController();
+
+        graphController.drawGraph(points);
+        Stage stage = new Stage();
+        stage.setTitle("Input");
+        stage.setScene(scene);
+        stage.showAndWait();
+
     }
 
     private void imageExportListener() {

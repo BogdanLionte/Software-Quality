@@ -5,18 +5,17 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
+import javafx.util.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Controller {
+public class GraphController {
 
+    private static final Double SCALING = 50.;
     @FXML
     GridPane gridPane;
 
     MyPane pane = new MyPane();
-
-    double SCALING = 1000;
 
     @FXML
     void initialize() {
@@ -25,42 +24,42 @@ public class Controller {
         Line horizontalAxis = new Line(-Integer.MAX_VALUE, 0, Integer.MAX_VALUE, 0);
         Line verticalAxis = new Line(0, -Integer.MAX_VALUE, 0, Integer.MAX_VALUE);
 
-
-        double minValue = -30;
-        double maxValue = 30;
-        double someStep = 5;
-        drawYvalues(minValue, maxValue, someStep);
-
-        double left = -30;
-        double right = 30;
-        double step = 0.1;
-        drawXvalues(left, right, step);
-
-
         pane.getChildren().add(horizontalAxis);
         pane.getChildren().add(verticalAxis);
 
-        List<Double> points = new ArrayList<>();
-        while (left < right) {
-            points.add(left * 50);
-            points.add(Math.sin(left) * (-50) );
-            left += step;
-        }
-
-        drawGraph(points, pane);
 
     }
 
-    private void drawGraph(List<Double> points, MyPane pane) {
+    public void drawGraph(List<Pair<Double, Double>> points) {
         Polyline graph = new Polyline();
-        graph.getPoints().addAll(points);
+
+        double minYvalue = Integer.MAX_VALUE;
+        double maxYvalue = Integer.MIN_VALUE;
+        double minXvalue = Integer.MAX_VALUE;
+        double maxXvalue = Integer.MIN_VALUE;
+
+        for (Pair<Double, Double> pair :
+                points) {
+            if (pair.getKey() < minXvalue)
+                minXvalue = pair.getKey();
+            if (pair.getKey() > maxXvalue)
+                maxXvalue = pair.getKey();
+            if (pair.getValue() < minYvalue)
+                minYvalue = pair.getValue();
+            if (pair.getValue() > maxYvalue)
+                maxYvalue = pair.getValue();
+            graph.getPoints().addAll(pair.getKey() * SCALING, pair.getValue() * (-SCALING));
+        }
+
+        drawYvalues(minYvalue, maxYvalue, 1);
+        drawXvalues(minXvalue, maxXvalue, 1);
 
         pane.getChildren().add(graph);
     }
 
     private void drawXvalues(double left, double right, double step) {
         for (double i = left; i < right; i += step) {
-            double labelValue = i * 50;
+            double labelValue = i * SCALING;
             Label xLabel = new Label(String.valueOf(i));
             xLabel.setTranslateX(labelValue);
             xLabel.setTranslateY(0);
@@ -70,7 +69,7 @@ public class Controller {
 
     private void drawYvalues(double minValue, double maxValue, double someStep) {
         for (double i = minValue; i < maxValue; i += someStep) {
-            double labelValue = i * 50;
+            double labelValue = i * SCALING;
             Label yLabel = new Label(String.valueOf(i));
             yLabel.setTranslateY((-1) * (labelValue));
             yLabel.setTranslateX(0);

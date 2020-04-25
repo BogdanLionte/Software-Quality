@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gridPane" alignment="center" hgap="10" minHeight="200.0" minWidth="200.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graph.Controller">
+<GridPane fx:id="gridPane" alignment="center" hgap="10" minHeight="200.0" minWidth="200.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="graph.GraphController">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
