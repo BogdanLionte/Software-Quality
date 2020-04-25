@@ -51,6 +51,7 @@ public class GraphController {
             graph.getPoints().addAll(pair.getKey() * SCALING, pair.getValue() * (-SCALING));
         }
 
+
         drawYvalues(minYvalue, maxYvalue, 1);
         drawXvalues(minXvalue, maxXvalue, 1);
 
@@ -64,9 +65,12 @@ public class GraphController {
     }
 
     private void drawXvalues(double left, double right, double step) {
-        for (double i = left; i < right; i += step) {
+        for (double i = left; i <= right; i += step) {
+            if (i == 0) {
+                continue;
+            }
             double labelValue = i * SCALING;
-            Label xLabel = new Label(String.valueOf(i));
+            Label xLabel = new Label(String.format("%.2f", i));
             xLabel.setTranslateX(labelValue);
             xLabel.setTranslateY(0);
             pane.getChildren().add(xLabel);
@@ -74,9 +78,12 @@ public class GraphController {
     }
 
     private void drawYvalues(double minValue, double maxValue, double someStep) {
-        for (double i = minValue; i < maxValue; i += someStep) {
+        for (double i = minValue; i <= maxValue; i += someStep) {
             double labelValue = i * SCALING;
-            Label yLabel = new Label(String.valueOf(i));
+            if (labelValue <= 0.3 && labelValue >= -0.3) {
+                continue;
+            }
+            Label yLabel = new Label(String.format("%.2f", i));
             yLabel.setTranslateY((-1) * (labelValue));
             yLabel.setTranslateX(0);
             pane.getChildren().add(yLabel);
