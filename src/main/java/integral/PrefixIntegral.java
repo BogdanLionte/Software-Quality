@@ -16,9 +16,13 @@ public class PrefixIntegral {
             double x_right = x_left + width;
             double x_mid = (x_right + x_left) / 2;
 
-            sum_left = sum_left + width * PrefixEv.f(x_left, terms);
-            sum_mid = sum_mid + width * PrefixEv.f(x_mid, terms);
-            sum_right = sum_right + width * PrefixEv.f(x_right, terms);
+            try {
+                sum_left = sum_left + width * PrefixEv.f(x_left, terms);
+                sum_mid = sum_mid + width * PrefixEv.f(x_mid, terms);
+                sum_right = sum_right + width * PrefixEv.f(x_right, terms);
+            } catch (IOException e) {
+                // TODO
+            }
         }
 
         return Arrays.asList(sum_left, sum_mid, sum_right);

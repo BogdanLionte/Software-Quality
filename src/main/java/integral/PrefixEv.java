@@ -127,7 +127,7 @@ public class PrefixEv {
         return operands.peek();
     }
 
-    public static Double f(double it, List<String> terms) {
+    public static Double f(double it, List<String> terms) throws IOException{
         Stack<Double> st = new Stack<Double>();
 
         for (String t : terms) {
@@ -139,9 +139,8 @@ public class PrefixEv {
                 st.push(Double.parseDouble(t));
 
             else {
-                double o1 = st.peek();
+                double o1 = st.peek(), o2;
                 st.pop();
-                double o2;
 
                 switch (t) {
                     case "+":
@@ -162,12 +161,18 @@ public class PrefixEv {
                     case "/":
                         o2 = st.peek();
                         st.pop();
-                        st.push(o1 / o2);
+                        if (o2 != 0)
+                            st.push(o1 / o2);
+                        else
+                            throw new IOException("NaN");
                         break;
                     case "%":
                         o2 = st.peek();
                         st.pop();
-                        st.push(o1 % o2);
+                        if (o2 != 0)
+                            st.push(o1 % o2);
+                        else
+                            throw new IOException("NaN");
                         break;
                     case "^":
                         o2 = st.peek();
@@ -178,7 +183,10 @@ public class PrefixEv {
                         st.push(exp(o1));
                         break;
                     case "sqrt":
-                        st.push(sqrt(o1));
+                        if (o1 >= 0)
+                            st.push(sqrt(o1));
+                        else
+                            throw new IOException("NaN");
                         break;
                     case "sin":
                         st.push(sin(o1));
@@ -190,7 +198,10 @@ public class PrefixEv {
                         st.push(tan(o1));
                         break;
                     case "log":
-                        st.push(log(o1));
+                        if (o1 > 0)
+                            st.push(log(o1));
+                        else
+                            throw new IOException("NaN");
                         break;
                 }
             }
@@ -203,10 +214,16 @@ public class PrefixEv {
         List<Pair<Double, Double>> res = new ArrayList<>();
         String prefix = infixToPrefix(expr);
         List<String> terms = Arrays.asList(prefix.split(" "));
+        double val;
 
         Collections.reverse(terms);
         for (double it = low; it <= high; it += step) {
-            double val = f(it, terms);
+            try{
+                val = f(it, terms);
+            }
+            catch (IOException e){
+                continue;
+            }
             res.add(new Pair<>(it, val));
         }
 
@@ -219,9 +236,10 @@ public class PrefixEv {
             System.out.println(infixToPrefix("( x ^ 3 - 6 * x ^ 2 ) + ( 4 * x + 12 )"));
             System.out.println(evaluate("( x ^ 3 - 6 * x ^ 2 ) + ( 4 * x + 12 )", -1, 1, 0.1));
             System.out.println(evaluate("exp ( x )", -1, 1, 0.1));
-            System.out.println(evaluate("sqrt ( x )", 0, 2, 0.1));
-            System.out.println(evaluate("log ( x )", 0, 2, 0.1));
+            System.out.println(evaluate("sqrt ( x )", -1, 2, 0.1));
+            System.out.println(evaluate("log ( x )", -1, 2, 0.1));
             System.out.println(evaluate("sin ( x )", -1, 1, 0.1));
+            System.out.println(evaluate("1 / x", 0, 1, 0.1));
         } catch (IOException e) {
             e.printStackTrace();
         }
