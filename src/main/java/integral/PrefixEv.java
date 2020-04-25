@@ -1,3 +1,5 @@
+package integral;
+
 import javafx.util.Pair;
 
 import java.util.*;
