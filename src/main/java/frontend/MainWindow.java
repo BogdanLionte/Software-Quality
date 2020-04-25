@@ -69,7 +69,7 @@ public class MainWindow extends Stage {
 
         functionInput.setMaxWidth(600D);
         functionInput.setAlignment(Pos.BASELINE_LEFT);
-        content.getChildren().add(new Label("Please insert function in prefix form: "));
+        content.getChildren().add(new Label("Please insert function  "));
         content.getChildren().add(functionInput);
 
         HBox numbers = new HBox(10);
@@ -162,8 +162,14 @@ public class MainWindow extends Stage {
         drawGraph(points);
 
         if (integral.isSelected()) {
-            List<Double> approximations = PrefixIntegral.integral(functionInput.getText(), lowIntervalNumber,
-                    highIntervalNumber, stepNumber);
+            List<Double> approximations;
+            try {
+                approximations = PrefixIntegral.integral(PrefixEv.infixToPrefix(functionInput.getText()), lowIntervalNumber,
+                        highIntervalNumber, stepNumber);
+            } catch (IOException e) {
+                windowManager.openAlert("Wrong token : " + e.getMessage());
+                return;
+            }
 
             HBox numbers = new HBox(10);
             numbers.setAlignment(Pos.CENTER);
