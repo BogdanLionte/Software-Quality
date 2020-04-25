@@ -22,7 +22,7 @@ public class TextExporter {
             sb.append(point.getValue().toString());
             sb.append("\n");
         }
-        Files.write(Paths.get(dir.getAbsolutePath() + FILENAME), sb.toString().getBytes(),
+        Files.write(Paths.get(dir.getAbsolutePath(), FILENAME), sb.toString().getBytes(),
                 StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     }
 }

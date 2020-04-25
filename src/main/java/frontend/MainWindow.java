@@ -1,5 +1,7 @@
 package frontend;
 
+import integral.PrefixEv;
+import integral.PrefixIntegral;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -25,6 +27,7 @@ public class MainWindow extends Stage {
     public final double HEIGHT = 750D;
     public final double WIDTH = 1000D;
 
+    private VBox content = new VBox(10);
     private List<Pair<Double, Double>> points = new ArrayList<>();
     private Region veil = new Region();
     private WindowManager windowManager = new WindowManager(veil);
@@ -36,10 +39,10 @@ public class MainWindow extends Stage {
     private Button draw = new Button("draw");
     private Button exportImage = new Button("export image");
     private Button exportText = new Button("export text");
+    private boolean eraseApproximations;
 
     public MainWindow() {
         StackPane root = new StackPane();
-        VBox content = new VBox(10);
         content.setAlignment(Pos.TOP_CENTER);
         veil.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3)");
         veil.setVisible(false);
@@ -104,7 +107,6 @@ public class MainWindow extends Stage {
     }
 
     private void drawListener() {
-        String function = functionInput.getText();
         double lowIntervalNumber;
         double highIntervalNumber;
         double stepNumber;
@@ -130,11 +132,40 @@ public class MainWindow extends Stage {
             return;
         }
 
-        //draw the graph here and get the points
+        try {
+            points = PrefixEv.evaluate(functionInput.getText(), lowIntervalNumber, highIntervalNumber, stepNumber);
+        } catch (IOException e) {
+            windowManager.openAlert("Wrong token : " + e.getMessage());
+            return;
+        }
+
+        if(lowIntervalNumber > highIntervalNumber) {
+            windowManager.openAlert("Low bigger than high !!");
+            return;
+        }
+
+        if(stepNumber > highIntervalNumber - lowIntervalNumber) {
+            windowManager.openAlert("Step bigger than interval!");
+            return;
+        }
+        //draw the graph here
 
         if (integral.isSelected()) {
-            System.out.println("Selected");
-            //get integral approximations here and add them to the window
+            List<Double> approximations = PrefixIntegral.integral(functionInput.getText(), lowIntervalNumber,
+                    highIntervalNumber, stepNumber);
+
+            HBox numbers = new HBox(10);
+            numbers.setAlignment(Pos.CENTER);
+
+            for (Double approx : approximations) {
+                numbers.getChildren().add(new Label(approx.toString()));
+            }
+
+            if(eraseApproximations) {
+                content.getChildren().remove(content.getChildren().size() - 1);
+            }
+            eraseApproximations = true;
+            content.getChildren().add(numbers);
         }
         exportImage.setDisable(false);
         exportText.setDisable(false);
@@ -152,8 +183,7 @@ public class MainWindow extends Stage {
         if (dir == null) {
             return;
         }
-        points.add(new Pair<>(10D, 10D));
-        points.add(new Pair<>(20D, 20D));
+
         try {
             TextExporter.saveToCsv(points, dir);
         } catch (IOException e) {

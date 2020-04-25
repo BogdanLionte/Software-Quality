@@ -1,3 +1,5 @@
+package integral;
+
 import javafx.util.Pair;
 
 import java.util.*;
@@ -97,7 +99,7 @@ public class PrefixEv {
         // check for invalid tokens
         for (String term : terms) {
             if (!Objects.equals(term, "x") && !isNumeric(term) && !ops.contains(term))
-                throw new IOException("InvalidTokenException");
+                throw new IOException(term);
         }
 
         Collections.reverse(terms);
