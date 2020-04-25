@@ -14,7 +14,7 @@ public class PrefixIntegral {
 
         for (double x_left = low; x_left < high; x_left = x_left + width) {
             double x_right = x_left + width;
-            double x_mid = (x_right - x_left) / 2;
+            double x_mid = (x_right + x_left) / 2;
 
             sum_left = sum_left + width * PrefixEv.f(x_left, terms);
             sum_mid = sum_mid + width * PrefixEv.f(x_mid, terms);
