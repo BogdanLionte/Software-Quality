@@ -1,9 +1,7 @@
 package graph;
 
 import javafx.fxml.FXML;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
@@ -13,7 +11,7 @@ import java.util.List;
 
 public class GraphController {
 
-    private static final Double SCALING = 50.;
+    public static final Double SCALING = 50.;
     @FXML
     GridPane gridPane;
 
@@ -55,6 +53,9 @@ public class GraphController {
 
         drawYvalues(minYvalue, maxYvalue, 1);
         drawXvalues(minXvalue, maxXvalue, 1);
+
+        graph.setOnMouseEntered(new MouseOverEventHandler(pane));
+        graph.setOnMouseExited(new MouseOverExitEventHandler(pane));
 
         pane.getChildren().add(graph);
 
