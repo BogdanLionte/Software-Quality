@@ -201,7 +201,7 @@ public class MainWindow extends Stage {
         stage.show();
         graphController.drawGraph(points);
 
-        image = graphController.getImage();
+        image = stage.getScene().snapshot(null);
     }
 
     private void imageExportListener() {
