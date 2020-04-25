@@ -186,11 +186,12 @@ public class MainWindow extends Stage {
         }
         GraphController graphController = fxmlLoader.getController();
 
-        graphController.drawGraph(points);
         Stage stage = new Stage();
         stage.setTitle("Input");
         stage.setScene(scene);
-        stage.showAndWait();
+        stage.setMaximized(true);
+        stage.show();
+        graphController.drawGraph(points);
 
     }
 

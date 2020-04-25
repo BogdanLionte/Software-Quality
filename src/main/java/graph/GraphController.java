@@ -55,6 +55,10 @@ public class GraphController {
         drawXvalues(minXvalue, maxXvalue, 1);
 
         pane.getChildren().add(graph);
+
+        pane.setTranslateX(pane.getWidth() / 2);
+        pane.setTranslateY(pane.getHeight() / 2);
+
     }
 
     private void drawXvalues(double left, double right, double step) {
