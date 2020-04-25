@@ -1,4 +1,4 @@
-package main.java.sample;
+package graph;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;

@@ -1,6 +1,5 @@
-package main.java.sample;
+package graph;
 
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.transform.Scale;

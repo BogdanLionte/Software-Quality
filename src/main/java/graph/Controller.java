@@ -1,4 +1,4 @@
-package main.java.sample;
+package graph;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
