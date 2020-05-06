@@ -22,19 +22,10 @@ import java.util.List;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-//@RunWith(MockitoJUnitRunner.class)
 @RunWith(JfxRunner.class)
 public class GraphControllerTest {
 
-
-    @InjectMocks
     GraphController cut;
-    //
-    @Mock
-    MyPane pane;
-
-//    @Mock
-//    Label yValueLabel;
 
     @Test
     public void test() {
