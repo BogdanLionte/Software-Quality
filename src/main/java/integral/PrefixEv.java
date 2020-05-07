@@ -1,7 +1,7 @@
 package integral;
 
 import javafx.util.Pair;
-
+import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.io.IOException;
 
@@ -28,14 +28,14 @@ public class PrefixEv {
         if (Objects.equals(S, "-") || Objects.equals(S, "+"))
             return 1;
         else if (Objects.equals(S, "*") || Objects.equals(S, "/") || Objects.equals(S, "%")
-                || Objects.equals(S, "sin") || Objects.equals(S, "cos") || Objects.equals(S, "tan") || Objects.equals(S, "log"))
+                || Objects.equals(S, "sin") || Objects.equals(S, "cos") || Objects.equals(S, "tan"))
             return 2;
-        else if (Objects.equals(S, "^") || Objects.equals(S, "exp") || Objects.equals(S, "sqrt"))
+        else if (Objects.equals(S, "^") || Objects.equals(S, "exp") || Objects.equals(S, "sqrt") || Objects.equals(S, "log"))
             return 3;
         return 0;
     }
 
-    public static String infixToPrefix(String infix) throws IOException {
+    public static String infixToPrefix(@NotNull String infix) throws IOException {
         List<String> terms = Arrays.asList(infix.split(" "));
         Stack<String> operators = new Stack<String>();
         Stack<String> operands = new Stack<String>();
@@ -127,7 +127,7 @@ public class PrefixEv {
         return operands.peek();
     }
 
-    public static Double f(double it, List<String> terms) throws IOException{
+    public static Double f(double it, @NotNull List<String> terms) throws IOException{
         Stack<Double> st = new Stack<Double>();
 
         for (String t : terms) {
@@ -228,20 +228,5 @@ public class PrefixEv {
         }
 
         return res;
-    }
-
-    public static void main(String[] args) {
-
-        try {
-            System.out.println(infixToPrefix("( x ^ 3 - 6 * x ^ 2 ) + ( 4 * x + 12 )"));
-            System.out.println(evaluate("( x ^ 3 - 6 * x ^ 2 ) + ( 4 * x + 12 )", -1, 1, 0.1));
-            System.out.println(evaluate("exp ( x )", -1, 1, 0.1));
-            System.out.println(evaluate("sqrt ( x )", -1, 2, 0.1));
-            System.out.println(evaluate("log ( x )", -1, 2, 0.1));
-            System.out.println(evaluate("sin ( x )", -1, 1, 0.1));
-            System.out.println(evaluate("1 / x", 0, 1, 0.1));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
