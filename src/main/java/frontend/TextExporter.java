@@ -13,7 +13,10 @@ public class TextExporter {
 
     public static String FILENAME = "textExport.csv";
 
-    public static void saveToCsv(List<Pair<Double, Double>> points, File dir) throws IOException {
+    public void saveToCsv(List<Pair<Double, Double>> points, File dir) throws IOException {
+        if (dir == null || points == null || points.isEmpty()) {
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("x,f(x)\n");
         for (Pair<Double, Double> point : points) {
