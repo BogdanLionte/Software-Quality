@@ -19,6 +19,7 @@ import javafx.scene.text.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import lombok.Getter;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
@@ -30,6 +31,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class MainWindow extends Stage {
 
     public final String TITLE = "Software Quality - Project";
@@ -50,6 +52,8 @@ public class MainWindow extends Stage {
     private Button exportText = new Button("export text");
     private boolean eraseApproximations;
     private static WritableImage image;
+    private DirectoryChooser directoryChooser = new DirectoryChooser();
+    private Stage drawWindow;
 
     public MainWindow() {
         StackPane root = new StackPane();
@@ -142,13 +146,6 @@ public class MainWindow extends Stage {
             return;
         }
 
-        try {
-            points = PrefixEv.evaluate(functionInput.getText(), lowIntervalNumber, highIntervalNumber, stepNumber);
-        } catch (IOException e) {
-            windowManager.openAlert("Wrong token : " + e.getMessage());
-            return;
-        }
-
         if(lowIntervalNumber > highIntervalNumber) {
             windowManager.openAlert("Low bigger than high !!");
             return;
@@ -156,6 +153,13 @@ public class MainWindow extends Stage {
 
         if(stepNumber > highIntervalNumber - lowIntervalNumber) {
             windowManager.openAlert("Step bigger than interval!");
+            return;
+        }
+
+        try {
+            points = PrefixEv.evaluate(functionInput.getText(), lowIntervalNumber, highIntervalNumber, stepNumber);
+        } catch (IOException e) {
+            windowManager.openAlert("NaN");
             return;
         }
 
@@ -167,7 +171,7 @@ public class MainWindow extends Stage {
                 approximations = PrefixIntegral.integral(PrefixEv.infixToPrefix(functionInput.getText()), lowIntervalNumber,
                         highIntervalNumber, stepNumber);
             } catch (IOException e) {
-                windowManager.openAlert("Wrong token : " + e.getMessage());
+                windowManager.openAlert("NaN");
                 return;
             }
 
@@ -207,6 +211,7 @@ public class MainWindow extends Stage {
         stage.show();
         graphController.drawGraph(points);
 
+        drawWindow = stage;
         image = stage.getScene().snapshot(null);
     }
 
@@ -235,7 +240,7 @@ public class MainWindow extends Stage {
         }
 
         try {
-            TextExporter.saveToCsv(points, dir);
+            new TextExporter().saveToCsv(points, dir);
         } catch (IOException e) {
             windowManager.openAlert("Error writing to selected file");
         }
@@ -243,7 +248,6 @@ public class MainWindow extends Stage {
 
     //this function returns null if the user closes the directory chooser without selecting anything
     private File getDirectoryFromUser() {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
         return directoryChooser.showDialog(this);
     }
 }

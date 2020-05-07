@@ -1,6 +1,5 @@
-package Parser;
+package integral;
 
-import integral.PrefixEv;
 import javafx.util.Pair;
 import org.junit.Test;
 
