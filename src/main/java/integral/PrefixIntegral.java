@@ -12,6 +12,8 @@ public class PrefixIntegral {
         Collections.reverse(terms);
         double sum_left = 0.0, sum_mid = 0.0, sum_right = 0.0;
 
+        if(width > high - low || low > high) return null;
+
         for (double x_left = low; x_left < high; x_left = x_left + width) {
             double x_right = x_left + width;
             double x_mid = (x_right + x_left) / 2;
