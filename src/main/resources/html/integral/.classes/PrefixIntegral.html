@@ -58,10 +58,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    63.2%
+    70%
   </span>
   <span class="absValue">
-    (12/ 19)
+    (14/ 20)
   </span>
 </td>
 </tr>
@@ -96,31 +96,31 @@
 <b class="fc"><i>22</i>&nbsp;                sum_left = sum_left + width * PrefixEv.f(x_left, terms);</b>
 <b class="fc"><i>23</i>&nbsp;                sum_mid = sum_mid + width * PrefixEv.f(x_mid, terms);</b>
 <b class="fc"><i>24</i>&nbsp;                sum_right = sum_right + width * PrefixEv.f(x_right, terms);</b>
-<b class="nc"><i>25</i>&nbsp;            } catch (IOException e) {</b>
-<i>26</i>&nbsp;                // TODO
+<b class="fc"><i>25</i>&nbsp;            } catch (IOException e) {</b>
+<b class="fc"><i>26</i>&nbsp;                return null;</b>
 <b class="fc"><i>27</i>&nbsp;            }</b>
 <i>28</i>&nbsp;        }
 <i>29</i>&nbsp;
 <b class="fc"><i>30</i>&nbsp;        return Arrays.asList(sum_left, sum_mid, sum_right);</b>
 <i>31</i>&nbsp;    }
 <i>32</i>&nbsp;
-<i>33</i>&nbsp;    public static void main(String[] args) {
-<i>34</i>&nbsp;
-<b class="nc"><i>35</i>&nbsp;        List&lt;Double&gt; i = integral(&quot;+ - ^ x 3 * 6 ^ x 2 + * 4 x 12&quot;, -1, 1, 0.1);</b>
-<b class="nc"><i>36</i>&nbsp;        System.out.println(i);</b>
-<i>37</i>&nbsp;
-<b class="nc"><i>38</i>&nbsp;        i = integral(&quot;sin x&quot;, -1, 1, 0.1);</b>
-<b class="nc"><i>39</i>&nbsp;        System.out.println(i);</b>
-<i>40</i>&nbsp;
-<i>41</i>&nbsp;
-<b class="nc"><i>42</i>&nbsp;    }</b>
+<i>33</i>&nbsp;//    public static void main(String[] args) {
+<i>34</i>&nbsp;//
+<b class="nc"><i>35</i>&nbsp;//        List&lt;Double&gt; i = integral(&quot;+ - ^ x 3 * 6 ^ x 2 + * 4 x 12&quot;, -1, 1, 0.1);</b>
+<b class="nc"><i>36</i>&nbsp;//        System.out.println(i);</b>
+<i>37</i>&nbsp;//
+<b class="nc"><i>38</i>&nbsp;//        i = integral(&quot;sin x&quot;, -1, 1, 0.1);</b>
+<b class="nc"><i>39</i>&nbsp;//        System.out.println(i);</b>
+<i>40</i>&nbsp;//
+<i>41</i>&nbsp;//
+<b class="nc"><i>42</i>&nbsp;//    }</b>
 <i>43</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2020-05-12 16:54</div>
+    <div style="float:right;">generated on 2020-05-12 17:58</div>
 </div>
 </body>
 </html>
