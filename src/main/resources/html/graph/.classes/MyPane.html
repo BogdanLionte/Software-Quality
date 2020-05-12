@@ -1,0 +1,106 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MyPane</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">graph</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MyPane (graph)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MyPane</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package graph;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import javafx.scene.control.Label;
+<i>4</i>&nbsp;import javafx.scene.input.MouseEvent;
+<i>5</i>&nbsp;import javafx.scene.layout.Pane;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class MyPane extends Pane {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    public double dragDeltaX;
+<i>11</i>&nbsp;    public double dragDeltaY;
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;    public Label yValueLabel = new Label();</b>
+<i>14</i>&nbsp;
+<b class="fc"><i>15</i>&nbsp;    public MyPane() {</b>
+<b class="fc"><i>16</i>&nbsp;        getChildren().add(yValueLabel);</b>
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;        addEventFilter(MouseEvent.MOUSE_DRAGGED, new PaneMouseDragging(this));</b>
+<b class="fc"><i>19</i>&nbsp;        addEventFilter(MouseEvent.MOUSE_PRESSED, new PanePressed(this));</b>
+<b class="fc"><i>20</i>&nbsp;        setOnScroll(new PaneScrolled(this));</b>
+<b class="fc"><i>21</i>&nbsp;    }</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-12 16:54</div>
+</div>
+</body>
+</html>
