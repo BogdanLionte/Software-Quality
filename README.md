@@ -8,4 +8,6 @@ How to run :
 2. Build the project by running : mvn clean install
 3. Start the project by running: java -jar target/Software-Quality-1.0-SNAPSHOT.jar
 
+The reports for unit test coverage can be found in src/main/resources/html
+
 
