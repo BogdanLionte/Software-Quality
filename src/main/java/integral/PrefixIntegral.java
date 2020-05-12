@@ -23,21 +23,21 @@ public class PrefixIntegral {
                 sum_mid = sum_mid + width * PrefixEv.f(x_mid, terms);
                 sum_right = sum_right + width * PrefixEv.f(x_right, terms);
             } catch (IOException e) {
-                // TODO
+                return null;
             }
         }
 
         return Arrays.asList(sum_left, sum_mid, sum_right);
     }
 
-    public static void main(String[] args) {
-
-        List<Double> i = integral("+ - ^ x 3 * 6 ^ x 2 + * 4 x 12", -1, 1, 0.1);
-        System.out.println(i);
-
-        i = integral("sin x", -1, 1, 0.1);
-        System.out.println(i);
-
-
-    }
+//    public static void main(String[] args) {
+//
+//        List<Double> i = integral("+ - ^ x 3 * 6 ^ x 2 + * 4 x 12", -1, 1, 0.1);
+//        System.out.println(i);
+//
+//        i = integral("sin x", -1, 1, 0.1);
+//        System.out.println(i);
+//
+//
+//    }
 }

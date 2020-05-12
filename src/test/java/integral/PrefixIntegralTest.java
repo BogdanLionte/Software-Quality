@@ -45,5 +45,8 @@ public class PrefixIntegralTest {
 
         List<Double> results7 = PrefixIntegral.integral("+ - ^ x 3 * 6 ^ x 2 + * 4 x 12", 1, -1, 0.1);
         assertNull(results7);
+
+        List<Double> results8 = PrefixIntegral.integral("/ 1 x", 0, 1, 0.1);
+        assertNull(results8);
     }
 }
