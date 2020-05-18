@@ -57,14 +57,14 @@ public class PrefixEvTest {
             PrefixEv.infixToPrefix("y + 3");
             fail("Invalid token: y");
         } catch (IOException e){
-            assertEquals("y", e.getMessage());
+            assertEquals("Invalid token in input equation: y", e.getMessage());
         }
 
         try{
             PrefixEv.infixToPrefix("! - 0");
             fail("Invalid token: !");
         } catch (IOException e){
-            assertEquals("!", e.getMessage());
+            assertEquals("Invalid token in input equation: !", e.getMessage());
         }
     }
 
@@ -77,7 +77,8 @@ public class PrefixEvTest {
                 f1 = Arrays.asList("log x".split(" ")),
                 f2 = Arrays.asList("sqrt x".split(" ")),
                 f3 = Arrays.asList("/ 1 x".split(" ")),
-                f4 = Arrays.asList("% 1 x".split(" "));
+                f4 = Arrays.asList("% 1 x".split(" ")),
+                f5 = Arrays.asList("( y".split(" "));
 
 
         try { Collections.reverse(v1);
@@ -130,6 +131,14 @@ public class PrefixEvTest {
         } catch (IOException e){
             assertEquals("NaN", e.getMessage());
         }
+
+        try {
+            Collections.reverse(f5);
+            PrefixEv.f(0.0, f5);
+            fail("Invalid input token");
+        } catch (IOException e){
+            assertEquals("Invalid token in input list of terms: y", e.getMessage());
+        }
     }
 
     @Test
@@ -142,7 +151,6 @@ public class PrefixEvTest {
             assertEquals(p0, res.get(0));
             assertEquals(p1, res.get(1));
         } catch(IOException e){ }
-
     }
 
 }

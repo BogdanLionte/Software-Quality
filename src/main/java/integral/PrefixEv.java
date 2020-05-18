@@ -12,19 +12,37 @@ public class PrefixEv {
     private static List<String> unary_ops = Arrays.asList("exp", "sqrt", "sin", "cos", "tan", "log"),
             binary_ops = Arrays.asList("+", "-", "*", "/", "%", "^");
 
-    public static boolean isNumeric(String strNum) {
+    /**
+     * @param  strNum any possible string
+     * @return true if the string is a number, false otherwise
+     *
+     * Precondition: none
+     * Post-condition: none
+     */
+    static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
         }
         try {
-            double d = Double.parseDouble(strNum);
+            Double.parseDouble(strNum);
         } catch (NumberFormatException nfe) {
             return false;
         }
+
         return true;
     }
 
-    public static int getPriority(String S) {
+    /**
+     * @param S the operator
+     * @return integer representing the operator's priority, higher number meaning higher priority
+     *
+     * Precondition: input string must be a valid operator
+     * Post-condition: none, as the return values are hardcoded
+     */
+    static int getPriority(String S) {
+        assert unary_ops.contains(S) || binary_ops.contains(S) || S.equals("(") || S.equals(")"): "S must be either a unary or binary operator";
+
+        /*-----------------METHOD CODE------------------*/
         if (Objects.equals(S, "-") || Objects.equals(S, "+"))
             return 1;
         else if (Objects.equals(S, "*") || Objects.equals(S, "/") || Objects.equals(S, "%")
@@ -35,19 +53,28 @@ public class PrefixEv {
         return 0;
     }
 
+    /**
+     * @param infix equation in infix form, with all terms separated by space
+     * @return string representing the equation in prefix form
+     * @throws IOException invalid tokens in the equation
+     *
+     * Precondition: The terms of the input equation must be valid: '(', ')', number, operator or 'x'
+     * Post-condition: The terms of the return equation must be valid: number or operator, 'x'
+     */
     public static String infixToPrefix(@NotNull String infix) throws IOException {
-        List<String> terms = Arrays.asList(infix.split(" "));
-        Stack<String> operators = new Stack<String>();
-        Stack<String> operands = new Stack<String>();
-        String op1, op2, op, tmp;
+        String[] terms = infix.split(" ");
 
-        // check for invalid tokens
         for (String term : terms) {
             if (!Objects.equals(term, "x") && !isNumeric(term)
                     && !unary_ops.contains(term) && !binary_ops.contains(term)
                     && !Objects.equals(term, "(") && !Objects.equals(term, ")"))
-                throw new IOException(term);
+                throw new IOException("Invalid token in input equation: " + term);
         }
+
+        /*-----------------METHOD CODE------------------*/
+        Stack<String> operators = new Stack<>();
+        Stack<String> operands = new Stack<>();
+        String op1, op2, op, tmp, output;
 
         for (String term : terms) {
 
@@ -124,11 +151,36 @@ public class PrefixEv {
             operands.push(tmp);
         }
 
-        return operands.peek();
+        output = operands.peek();
+
+        /*----------------POST-CONDITION-------------------*/
+        for (String term : output.split(" ")) {
+            if (!Objects.equals(term, "x") && !isNumeric(term)
+                    && !unary_ops.contains(term) && !binary_ops.contains(term))
+                throw new IOException("Invalid token in output equation: " + term);
+        }
+
+        return output;
     }
 
-    public static Double f(double it, @NotNull List<String> terms) throws IOException{
-        Stack<Double> st = new Stack<Double>();
+    /**
+     * @param it a value that replaces 'x' in the equation
+     * @param terms list of terms of the prefix equation
+     * @return computational result of the equation
+     * @throws IOException for when an operation cannot be completed
+     *
+     * Precondition: the terms of the input list to be valid: number, operator or 'x'
+     * Post-condition: none
+     */
+    static Double f(double it, @NotNull List<String> terms) throws IOException{
+        for (String term : terms) {
+            if (!Objects.equals(term, "x") && !isNumeric(term)
+                    && !unary_ops.contains(term) && !binary_ops.contains(term))
+                throw new IOException("Invalid token in input list of terms: " + term);
+        }
+
+        /*-----------------METHOD CODE------------------*/
+        Stack<Double> st = new Stack<>();
 
         for (String t : terms) {
 
@@ -210,11 +262,25 @@ public class PrefixEv {
         return st.peek();
     }
 
+    /**
+     * @param expr equation in infix form
+     * @param low lower bound of the interval
+     * @param high higher bound of the interval
+     * @param step value to be added each iteration to the current iterator of the interval
+     * @return list of coordinates which will be used to draw a graph
+     * @throws IOException if input equation cannot be converted to prefix form
+     *
+     * Precondition: the interval bounds and step to be valid
+     * Post-condition: none
+     */
     public static List<Pair<Double, Double>> evaluate(String expr, double low, double high, double step) throws IOException {
+        assert low < high && step <= (high-low);
+
+        /*-----------------METHOD CODE------------------*/
         List<Pair<Double, Double>> res = new ArrayList<>();
         String prefix = infixToPrefix(expr);
         List<String> terms = Arrays.asList(prefix.split(" "));
-        double val;
+        Double val;
 
         Collections.reverse(terms);
         for (double it = low; it <= high; it += step) {
