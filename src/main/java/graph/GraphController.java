@@ -19,6 +19,10 @@ public class GraphController {
 
     @FXML
     void initialize() {
+
+        assert gridPane != null;
+        assert pane != null;
+
         gridPane.getChildren().addAll(pane);
 
         Line horizontalAxis = new Line(-Integer.MAX_VALUE, 0, Integer.MAX_VALUE, 0);
@@ -27,10 +31,15 @@ public class GraphController {
         pane.getChildren().add(horizontalAxis);
         pane.getChildren().add(verticalAxis);
 
+        assert !pane.getChildren().isEmpty();
+
 
     }
 
     public void drawGraph(List<Pair<Double, Double>> points) {
+
+        assert !points.isEmpty();
+
         Polyline graph = new Polyline();
 
         double minYvalue = Integer.MAX_VALUE;
@@ -58,6 +67,8 @@ public class GraphController {
         graph.setOnMouseExited(new MouseOverExitEventHandler(pane));
 
         pane.getChildren().add(graph);
+
+        assert !pane.getChildren().isEmpty();
 
         pane.setTranslateX(pane.getWidth() / 2);
         pane.setTranslateY(pane.getHeight() / 2);
