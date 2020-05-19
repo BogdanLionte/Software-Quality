@@ -17,6 +17,10 @@ public class TextExporter {
         if (dir == null || points == null || points.isEmpty()) {
             return;
         }
+
+        assert !dir.getAbsolutePath().isEmpty();
+        assert FILENAME != null;
+
         StringBuilder sb = new StringBuilder();
         sb.append("x,f(x)\n");
         for (Pair<Double, Double> point : points) {
@@ -25,6 +29,8 @@ public class TextExporter {
             sb.append(point.getValue().toString());
             sb.append("\n");
         }
+
+        assert !sb.toString().isEmpty();
         Files.write(Paths.get(dir.getAbsolutePath(), FILENAME), sb.toString().getBytes(),
                 StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
     }
