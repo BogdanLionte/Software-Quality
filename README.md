@@ -1,4 +1,4 @@
-# Software-Quality
+# Software-Quality (Echipa 1: Tiron Adrian, Lionte Bogdan, Tatu Georgian, Ihnatiw Stefan)
 
 Requirements: JDK version 8 and Maven 3 (make sure you have set JAVA_HOME and MVN_HOME environment variables)
 
