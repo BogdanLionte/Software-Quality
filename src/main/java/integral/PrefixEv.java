@@ -284,6 +284,8 @@ public class PrefixEv {
 
         Collections.reverse(terms);
         for (double it = low; it <= high; it += step) {
+            assert high - it >= 0; //invariant
+
             try{
                 val = f(it, terms);
             }

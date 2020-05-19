@@ -26,7 +26,8 @@ public class PrefixIntegral {
         List<String> terms = Arrays.asList(expr.split(" "));
         Collections.reverse(terms);
 
-        for (x_left = low; x_left < high; x_left = x_left + width) {
+        for (x_left = low; x_left < high; x_left += width) {
+            assert high - x_left > 0; // invariant
 
             x_right = x_left + width;
             x_mid = (x_right + x_left) / 2;
