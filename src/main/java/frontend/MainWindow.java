@@ -125,6 +125,18 @@ public class MainWindow extends Stage {
         double highIntervalNumber;
         double stepNumber;
 
+        assert lowInterval != null;
+        assert windowManager != null;
+        assert highInterval != null;
+        assert step != null;
+        assert functionInput != null;
+        assert exportText != null;
+        assert exportImage != null;
+        assert exportText.isDisable();
+        assert exportImage.isDisable();
+        assert points != null;
+        assert points.isEmpty();
+
         try {
             lowIntervalNumber = Double.parseDouble(lowInterval.getText());
         } catch (NumberFormatException e) {
@@ -190,10 +202,16 @@ public class MainWindow extends Stage {
         }
         exportImage.setDisable(false);
         exportText.setDisable(false);
+
+        assert !exportImage.isDisable();
+        assert !exportText.isDisable();
+        assert !points.isEmpty();
+        assert integral.isSelected() && ((HBox)content.getChildren().get(content.getChildren().size() - 1)).getChildren().size() == 3;
     }
 
     private void drawGraph(List<Pair<Double, Double>> points) {
 
+        assert points != null && !points.isEmpty();
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/graph/graph.fxml"));
         Scene scene = null;
@@ -213,6 +231,9 @@ public class MainWindow extends Stage {
 
         drawWindow = stage;
         image = stage.getScene().snapshot(null);
+
+        assert drawWindow != null;
+        assert image != null;
     }
 
     private void imageExportListener() {
@@ -222,6 +243,9 @@ public class MainWindow extends Stage {
         }
 
         try {
+            assert image != null;
+            assert !dir.getAbsolutePath().isEmpty();
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", baos);
             baos.flush();
@@ -240,6 +264,9 @@ public class MainWindow extends Stage {
         }
 
         try {
+            assert image != null;
+            assert !dir.getAbsolutePath().isEmpty();
+
             new TextExporter().saveToCsv(points, dir);
         } catch (IOException e) {
             windowManager.openAlert("Error writing to selected file");

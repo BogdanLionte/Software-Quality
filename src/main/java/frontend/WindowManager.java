@@ -13,6 +13,8 @@ class WindowManager {
     }
 
     void openAlert(String text){
+        assert veil != null;
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         veil.visibleProperty().bind(alert.showingProperty());
         alert.setContentText(text);
